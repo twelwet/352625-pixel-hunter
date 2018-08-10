@@ -4,7 +4,7 @@
 const RIGHT_ARROW = 37;
 const LEFT_ARROW = 39;
 
-// Контейнер для вставки слайдов игры:
+// Контейнер для вставки слайдов игры
 const mainElement = document.querySelector(`#main`);
 
 // Функция переключения сладов
@@ -39,15 +39,55 @@ const select = (index) => {
   selectSlide(screens[current].content);
 };
 
+// Обработка события 'keydown' на клавиатурные кнопки <- и ->
 document.addEventListener(`keydown`, (evt) => {
   switch (evt.keyCode) {
     case RIGHT_ARROW:
-      select(current + 1);
+      select(current - 1);
       break;
     case LEFT_ARROW:
-      select(current - 1);
+      select(current + 1);
       break;
   }
 });
 
 select(0);
+
+// HTML-контейнер для кнопок
+const htmlBlock = `
+  <div class="arrows__wrap">
+    <style>
+      .arrows__wrap {
+        position: absolute;
+        top: 95px;
+        left: 50%;
+        margin-left: -56px;
+      }
+      .arrows__btn {
+        background: none;
+        border: 2px solid black;
+        padding: 5px 20px;
+      }
+    </style>
+    <button class="arrows__btn arrows__btn--left"><-</button>
+    <button class="arrows__btn arrows__btn--right">-></button>
+  </div>
+`;
+
+// Вставка кнопок на страницу
+document.querySelector(`body`).insertAdjacentHTML(`beforeend`, htmlBlock);
+
+// Находим в верстке необходимые элементы
+const navBlock = document.querySelector(`.arrows__wrap`);
+const leftBtn = navBlock.querySelector(`.arrows__btn--left`);
+const rightBtn = navBlock.querySelector(`.arrows__btn--right`);
+
+// Обработка события 'click' на кнопку <-
+leftBtn.addEventListener(`click`, () => {
+  select(current - 1);
+});
+
+// Обработка события 'click' на кнопку ->
+rightBtn.addEventListener(`click`, () => {
+  select(current + 1);
+});
