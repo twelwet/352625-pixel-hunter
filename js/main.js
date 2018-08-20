@@ -1,6 +1,7 @@
 // main.js
 
-import changeScreen from './js/util.js';
-import introScreen from './js/intro.js';
+import {changeScreen} from './util.js';
+import {introScreen} from './intro.js';
+
 
 changeScreen(introScreen);

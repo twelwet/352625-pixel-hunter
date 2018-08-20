@@ -1,6 +1,7 @@
 // intro.js
 
-import render from './js/util.js';
+import {changeScreen, render} from './util.js';
+import {greetingScreen} from './greeting.js';
 
 const template = `
   <section class="intro">
@@ -9,6 +10,8 @@ const template = `
   </section>
 `;
 
-const element = render(template);
+export const introScreen = render(template);
 
-export default element;
+const asterisk = introScreen.querySelector(`.intro__asterisk`);
+
+asterisk.addEventListener(`click`, () => changeScreen(greetingScreen));
