@@ -73,7 +73,7 @@ const inputs = [...gameOneScreen.querySelectorAll(`input`)];
 
 inputs.forEach((element) => {
   element.addEventListener(`change`, () => {
-    if (inputs[0].checked || inputs[1].checked && inputs[2].checked || inputs[3].checked) {
+    if ((inputs[0].checked || inputs[1].checked) && (inputs[2].checked || inputs[3].checked)) {
       changeScreen(gameTwoScreen);
     }
   });

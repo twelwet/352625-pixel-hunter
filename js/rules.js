@@ -45,13 +45,7 @@ const rulesInput = rulesScreen.querySelector(`.rules__input`);
 const rulesButton = rulesScreen.querySelector(`.rules__button`);
 
 rulesInput.addEventListener(`input`, () => {
-  switch (rulesInput.value) {
-    case ``:
-      rulesButton.disabled = true;
-      break;
-    default:
-      rulesButton.disabled = false;
-  }
+  rulesButton.disabled = (rulesInput.value === ``);
 });
 
 rulesButton.addEventListener(`click`, () => changeScreen(gameOneScreen));
