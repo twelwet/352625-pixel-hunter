@@ -1,4 +1,4 @@
-export const LEVELS = {
+const LEVELS = {
   START: 1, // Номер первого уровня
   FINISH: 10 // Номер последнего уровня
 };
@@ -6,6 +6,12 @@ export const LEVELS = {
 const LIVES = {
   DEFAULT: 3, // Количество жизней по умолчанию
   LAST: 0 // Минимальное количество жизней
+};
+
+const POINTS = {
+  DEFAULT: 100,
+  EXTRA: 50,
+  SLOW_RESULT: -50
 };
 
 const TIME = { // seconds
@@ -16,11 +22,11 @@ const TIME = { // seconds
   // Если `TIME.FAST` < `время ответа` < `TIME.SLOW`, то ответ приносит `100 очков`
 };
 
-// Значение, которое возвращается когда `что-то пошло не так`
-export const TROUBLE = -1;
-
 // Значение, которое возвращается когда игра окончена
-export const GAME_OVER = `GAME OVER!`;
+export const GAME = {
+  FAIL: false, // неуспешно - все жизни потрачены
+  OVER: true // успешно
+};
 
 // Типы ответов
 const ANSWER_TYPES = {
@@ -38,85 +44,81 @@ answer = [
 */
 
 export const scoring = (answers, numberOfLives) => {
-  // Первый агрумент `answers` должен быть массивом c длиной 10
-  if (!Array.isArray(answers) ||
-  answers.length !== LEVELS.FINISH ||
-  // Второй аргумент `numberOfLives` должен быть целым числом 0 =< `numberOfLives` =< 3
-  !Number.isInteger(numberOfLives) ||
-  numberOfLives < LIVES.LAST ||
-  numberOfLives > LIVES.DEFAULT
-  ) {
-    return TROUBLE;
-  } else {
-    let numberOfPoints = 0;
-    answers.forEach((element) => {
-      if (element[0]) {
-        numberOfPoints = numberOfPoints + 100;
-      }
-      if (element[1] <= TIME.FAST) {
-        numberOfPoints = numberOfPoints + 50;
-      } else if (element[1] >= TIME.SLOW) {
-        numberOfPoints = numberOfPoints - 50;
-      }
-    });
-    if (numberOfLives > 0) {
-      numberOfPoints = numberOfPoints + numberOfLives * 50;
-    }
-    return numberOfPoints;
+  if (!Array.isArray(answers)) {
+    throw new Error(`Answer's format should be of type array`);
   }
+  if (answers.length !== LEVELS.FINISH) {
+    throw new Error(`Answer's array should have lenght of ${LEVELS.FINISH}`);
+  }
+  if (!Number.isInteger(numberOfLives) ||
+  numberOfLives < LIVES.LAST ||
+  numberOfLives > LIVES.DEFAULT) {
+    throw new Error(`Number of Lives should be of type number between ${LIVES.LAST} and ${LIVES.DEFAULT}`);
+  }
+  let numberOfPoints = 0;
+  answers.forEach((element) => {
+    if (element[0]) {
+      numberOfPoints = numberOfPoints + POINTS.DEFAULT;
+    }
+    if (element[1] <= TIME.FAST) {
+      numberOfPoints = numberOfPoints + POINTS.EXTRA;
+    } else if (element[1] >= TIME.SLOW) {
+      numberOfPoints = numberOfPoints + POINTS.SLOW_RESULT;
+    }
+  });
+  if (numberOfLives > LIVES.LAST) {
+    numberOfPoints = numberOfPoints + numberOfLives * POINTS.EXTRA;
+  }
+  return numberOfPoints;
 };
 
 export const manageLives = (numberOfLives, answer) => {
-  // Аргумент `numberOfLives` должен быть целым числом 0 =< `numberOfLives` =< 3
   if (!Number.isInteger(numberOfLives) ||
   numberOfLives < LIVES.LAST ||
-  numberOfLives > LIVES.DEFAULT ||
-  // Аргумент `answer` должен быть `boolean`
-  typeof answer !== `boolean`
-  ) {
-    return TROUBLE;
-  } else {
-    let remainingLives = numberOfLives;
-    if (!answer && numberOfLives > LIVES.LAST) {
-      remainingLives = remainingLives - 1;
-    } else if (!answer && numberOfLives === LIVES.LAST) {
-      return GAME_OVER;
-    }
-    return remainingLives;
+  numberOfLives > LIVES.DEFAULT) {
+    throw new Error(`Number of Lives should be of type number between ${LIVES.LAST} and ${LIVES.DEFAULT}`);
   }
+  if (typeof answer !== `boolean`) {
+    throw new Error(`Answer should be of type boolean`);
+  }
+  let remainingLives = numberOfLives;
+  if (!answer && numberOfLives > LIVES.LAST) {
+    remainingLives = remainingLives - 1;
+  } else if (!answer && numberOfLives === LIVES.LAST) {
+    return GAME.FAIL;
+  }
+  return remainingLives;
 };
 
 export const switchLevel = (currentLevel) => {
-  // Аргумент `currentLevel` должен быть целым числом 1 =< `numberOfLives` =< 10
   if (!Number.isInteger(currentLevel) ||
   currentLevel < LEVELS.START ||
   currentLevel > LEVELS.FINISH
   ) {
-    return TROUBLE;
-  } else {
-    let nextLevel = currentLevel;
-    if (currentLevel < LEVELS.FINISH) {
-      nextLevel = nextLevel + 1;
-    }
-    return nextLevel;
+    throw new Error(`current Level should be of type number between ${LEVELS.START} and ${LEVELS.FINISH}`);
   }
+  let nextLevel = currentLevel;
+  if (currentLevel < LEVELS.FINISH) {
+    nextLevel = nextLevel + 1;
+  } else {
+    nextLevel = GAME.OVER;
+  }
+  return nextLevel;
 };
 
 export const returnTypeOfAnswer = (time) => {
-  // Аргумент `time` должен быть целым числом 0 =< `time` =< 30
   if (!Number.isInteger(time) ||
   time < TIME.START ||
   time > TIME.FINISH) {
-    return TROUBLE;
-  } else {
-    let answerType;
-    if (time <= TIME.FAST) {
-      answerType = ANSWER_TYPES.FAST;
-    } else if (time >= TIME.SLOW) {
-      answerType = ANSWER_TYPES.SLOW;
-    } else {
-      answerType = ANSWER_TYPES.NORMAL;
-    }
-    return answerType;
+    throw new Error(`time should be of type number between ${TIME.START} and ${TIME.FINISH}`);
   }
+  let answerType;
+  if (time <= TIME.FAST) {
+    answerType = ANSWER_TYPES.FAST;
+  } else if (time >= TIME.SLOW) {
+    answerType = ANSWER_TYPES.SLOW;
+  } else {
+    answerType = ANSWER_TYPES.NORMAL;
+  }
+  return answerType;
 };
