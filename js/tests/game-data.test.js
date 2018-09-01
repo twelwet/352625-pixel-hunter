@@ -28,6 +28,9 @@ describe(`scoring`, () => {
       [true, 29]
     ], 3), 550);
   });
+  it(`should cover Error cases`, () => {
+    assert.throws(scoring, Error);
+  });
 });
 
 describe(`manageLives`, () => {
@@ -40,6 +43,9 @@ describe(`manageLives`, () => {
     assert.equal(manageLives(2, false), 1);
     assert.equal(manageLives(1, false), 0);
     assert.equal(manageLives(0, false), GAME.FAIL);
+  });
+  it(`should cover Error cases`, () => {
+    assert.throws(manageLives, Error);
   });
 });
 
@@ -56,6 +62,9 @@ describe(`switchLevel`, () => {
     assert.equal(switchLevel(9), 10);
     assert.equal(switchLevel(10), GAME.OVER);
   });
+  it(`should cover Error cases`, () => {
+    assert.throws(switchLevel, Error);
+  });
 });
 
 describe(`returnTypeOfAnswer`, () => {
@@ -68,4 +77,8 @@ describe(`returnTypeOfAnswer`, () => {
     assert.equal(returnTypeOfAnswer(25), 2);
     assert.equal(returnTypeOfAnswer(30), 2);
   });
+  it(`should cover Error cases`, () => {
+    assert.throws(returnTypeOfAnswer, Error);
+  });
+
 });
