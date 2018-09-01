@@ -30,6 +30,48 @@ describe(`scoring`, () => {
   });
   it(`should cover Error cases`, () => {
     assert.throws(scoring, Error);
+    assert.throws(() => scoring([[false, 25], [true, 15], [false, 32]], 2), Error);
+    assert.throws(() => scoring({}, 3), Error);
+    assert.throws(() => scoring(5, 1), Error);
+    assert.throws(() => scoring(false, 0), Error);
+    assert.throws(() => scoring(NaN, 3), Error);
+    assert.throws(() => scoring(undefined, 0), Error);
+    assert.throws(() => scoring([
+      [true, 15],
+      [true, 15],
+      [true, 15],
+      [true, 15],
+      [true, 15],
+      [true, 15],
+      [true, 15],
+      [true, 15],
+      [true, 15],
+      [true, 15]
+    ], NaN), Error);
+    assert.throws(() => scoring([
+      [true, 15],
+      [true, 15],
+      [true, 15],
+      [true, 15],
+      [true, 15],
+      [true, 15],
+      [true, 15],
+      [true, 15],
+      [true, 15],
+      [true, 15]
+    ], 4), Error);
+    assert.throws(() => scoring([
+      [true, 15],
+      [true, 15],
+      [true, 15],
+      [true, 15],
+      [true, 15],
+      [true, 15],
+      [true, 15],
+      [true, 15],
+      [true, 15],
+      [true, 15]
+    ], [1, 2]), Error);
   });
 });
 
@@ -46,6 +88,16 @@ describe(`manageLives`, () => {
   });
   it(`should cover Error cases`, () => {
     assert.throws(manageLives, Error);
+    assert.throws(() => manageLives(4, false), Error);
+    assert.throws(() => manageLives(-42, true), Error);
+    assert.throws(() => manageLives(`string`, false), Error);
+    assert.throws(() => manageLives([], true), Error);
+    assert.throws(() => manageLives({}, false), Error);
+    assert.throws(() => manageLives(3, 54), Error);
+    assert.throws(() => manageLives(2, `string`), Error);
+    assert.throws(() => manageLives(1, []), Error);
+    assert.throws(() => manageLives(0, {}), Error);
+    assert.throws(() => manageLives(`string`, NaN), Error);
   });
 });
 
@@ -64,6 +116,12 @@ describe(`switchLevel`, () => {
   });
   it(`should cover Error cases`, () => {
     assert.throws(switchLevel, Error);
+    assert.throws(() => switchLevel(-1), Error);
+    assert.throws(() => switchLevel(NaN), Error);
+    assert.throws(() => switchLevel(true), Error);
+    assert.throws(() => switchLevel(`string`), Error);
+    assert.throws(() => switchLevel([3, 2, 1]), Error);
+    assert.throws(() => switchLevel({}), Error);
   });
 });
 
@@ -79,6 +137,11 @@ describe(`returnTypeOfAnswer`, () => {
   });
   it(`should cover Error cases`, () => {
     assert.throws(returnTypeOfAnswer, Error);
+    assert.throws(() => returnTypeOfAnswer(-2), Error);
+    assert.throws(() => returnTypeOfAnswer(NaN), Error);
+    assert.throws(() => returnTypeOfAnswer(false), Error);
+    assert.throws(() => returnTypeOfAnswer(undefined), Error);
+    assert.throws(() => returnTypeOfAnswer([3, 2, 1]), Error);
+    assert.throws(() => returnTypeOfAnswer({}), Error);
   });
-
 });
