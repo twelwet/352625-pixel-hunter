@@ -1,21 +1,10 @@
 // rules.js
 
-import {changeScreen, render} from './util.js';
-import {greetingScreen} from './greeting.js';
-import {gameOneScreen} from './game-1.js';
+import {changeScreenWithHeader, render} from './util.js';
+import {gameHeaderBlock} from './light-header.js';
+import {gameOneBlock} from './game-1.js';
 
 const template = `
-  <header class="header">
-    <button class="back">
-      <span class="visually-hidden">Вернуться к началу</span>
-      <svg class="icon" width="45" height="45" viewBox="0 0 45 45" fill="#000000">
-        <use xlink:href="img/sprite.svg#arrow-left"></use>
-      </svg>
-      <svg class="icon" width="101" height="44" viewBox="0 0 101 44" fill="#000000">
-        <use xlink:href="img/sprite.svg#logo-small"></use>
-      </svg>
-    </button>
-  </header>
   <section class="rules">
     <h2 class="rules__title">Правила</h2>
     <ul class="rules__description">
@@ -36,10 +25,6 @@ const template = `
 
 export const rulesScreen = render(template);
 
-const backButton = rulesScreen.querySelector(`.back`);
-
-backButton.addEventListener(`click`, () => changeScreen(greetingScreen));
-
 const rulesInput = rulesScreen.querySelector(`.rules__input`);
 
 const rulesButton = rulesScreen.querySelector(`.rules__button`);
@@ -48,4 +33,4 @@ rulesInput.addEventListener(`input`, () => {
   rulesButton.disabled = (rulesInput.value === ``);
 });
 
-rulesButton.addEventListener(`click`, () => changeScreen(gameOneScreen));
+rulesButton.addEventListener(`click`, () => changeScreenWithHeader(gameHeaderBlock, gameOneBlock));

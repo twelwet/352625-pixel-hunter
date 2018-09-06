@@ -1,6 +1,7 @@
 // greeting.js
 
-import {changeScreen, render} from './util.js';
+import {changeScreenWithHeader, render} from './util.js';
+import {lightHeaderBlock} from './light-header.js';
 import {rulesScreen} from './rules.js';
 
 const template = `
@@ -30,4 +31,4 @@ export const greetingScreen = render(template);
 
 const nextButton = greetingScreen.querySelector(`.greeting__continue`);
 
-nextButton.addEventListener(`click`, () => changeScreen(rulesScreen));
+nextButton.addEventListener(`click`, () => changeScreenWithHeader(lightHeaderBlock, rulesScreen));

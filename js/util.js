@@ -8,7 +8,13 @@ export const render = (template) => {
 
 const mainElement = document.querySelector(`#main`);
 
-export const changeScreen = (element) => {
+export const changeScreen = (block) => {
   mainElement.innerHTML = ``;
-  mainElement.appendChild(element);
+  mainElement.appendChild(block);
+};
+
+export const changeScreenWithHeader = (header, block) => {
+  mainElement.innerHTML = ``;
+  mainElement.appendChild(header);
+  mainElement.appendChild(block);
 };
